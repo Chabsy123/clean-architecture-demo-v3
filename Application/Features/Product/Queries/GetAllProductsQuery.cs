@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Product.Queries
 {
-    public class GetAllProductsQuery : IRequest<IEnumerable<Product>>
+    public class GetAllProductsQuery : IRequest<IEnumerable<Domain.Entities.Product>>
     {
-        internal class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, IEnumerable<Product>>
+        internal class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, IEnumerable<Domain.Entities.Product>>
         {
-            public async Task<IEnumerable<Product>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+            public async Task<IEnumerable<Domain.Entities.Product>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
             {
                 //logic to get all products
-                var list = new List<Product>();
+                var list = new List<Domain.Entities.Product>();
                 for (int i = 0; i <= 100; i++)
                 {
-                    var prod = new Product();
+                    var prod = new Domain.Entities.Product();
                     prod.Name = "Mobile";
                     prod.Description = "test Mobile";
                     prod.Rate = 100 + i;
@@ -29,10 +29,4 @@ namespace Application.Features.Product.Queries
         }
     }
 
-    public class Product
-    {
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public decimal Rate { get; set; }
-    }
 }

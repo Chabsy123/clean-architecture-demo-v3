@@ -9,6 +9,6 @@
     <Project Path="Persistance/Persistance.csproj" />
   </Folder>
   <Folder Name="/Src/Presentation/">
-    <Project Path="WebApi/WebApi.csproj" />
+    <Project Path="WebApi/WebApi.csproj" Id="cf13fd7c-dd3e-4eb6-8958-19f3c0b92403" />
   </Folder>
 </Solution>
