@@ -1,30 +1,25 @@
-﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Interfaces;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Features.Product.Queries
 {
     public class GetAllProductsQuery : IRequest<IEnumerable<Domain.Entities.Product>>
     {
-        internal class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, IEnumerable<Domain.Entities.Product>>
+        public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, IEnumerable<Domain.Entities.Product>>
         {
-            public async Task<IEnumerable<Domain.Entities.Product>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+            private readonly IApplicationDbContext _context;
+
+            public GetAllProductsQueryHandler(IApplicationDbContext context)
             {
                 //logic to get all products
-                var list = new List<Domain.Entities.Product>();
-                for (int i = 0; i <= 100; i++)
-                {
-                    var prod = new Domain.Entities.Product();
-                    prod.Name = "Mobile";
-                    prod.Description = "test Mobile";
-                    prod.Rate = 100 + i;
+                _context = context;
+            }
 
-                    list.Add(prod);
-                }
-                return list;
+               public async Task<IEnumerable<Domain.Entities.Product>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+            {
+                var result = await _context.Products.ToListAsync(cancellationToken);
+                return result;
             }
         }
     }
