@@ -2,12 +2,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application
 {
@@ -16,7 +11,8 @@ namespace Application
         public static void AddApplication(this IServiceCollection services)
         {
             // Add application services here
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            // To this (Adding an empty action 'cfg => {}' forces the correct constructor):
+            services.AddAutoMapper(cfg => { }, Assembly.GetExecutingAssembly());
             services.AddMediatR(conf => conf.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
             //register validators

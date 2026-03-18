@@ -10,19 +10,19 @@
         //success response
         public ApiResponse(T data, string message = null)
         {
-            Succecced = true;
+            Succeed = true;
             Message = message;
             Data = data;
         }
 
-        //faild response
+        //failed response
         public ApiResponse(string message)
         {
-            Succecced = false;
+            Succeed = false;
             Message = message;
         }
 
-        public bool Succecced { get; set; }
+        public bool Succeed { get; set; }
         public string Message { get; set; }
         public List<string> Errors { get; set; }
         public T Data { get; set; }
