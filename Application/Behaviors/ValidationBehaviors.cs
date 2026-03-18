@@ -1,12 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
+using MediatR;
 
 namespace Application.Behaviors
 {
-    internal class ValidationBehaviors
+    public class ValidationBehaviours<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
+        private readonly IEnumerable<IValidator<TRequest>> _validator;
+        public ValidationBehaviours(IEnumerable<IValidator<TRequest>> validator)
+        {
+            _validator = validator;
+        }
+
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+        {
+            //Pre-Processing logic here
+            //For Example, Logging, validation
+
+            if (_validator.Any())
+            {
+                var validationContext = new ValidationContext<TRequest>(request);
+                var result = await Task.WhenAll(_validator.Select(v => v.ValidateAsync(validationContext, cancellationToken)));
+                var failers = result.SelectMany(r => r.Errors).Where(f => f != null).ToList();
+
+                if (failers.Count > 0)
+                {
+                    throw new ValidationException(failers);
+                }
+            }
+
+            //Next
+
+            var response = await next();
+
+            //Post-Processing logic here
+            //For Example, Response modification...
+
+            return response;
+        }
     }
 }
