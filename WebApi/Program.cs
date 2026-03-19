@@ -1,4 +1,5 @@
 using Application;
+using Application.Interfaces;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -6,6 +7,8 @@ using Persistance;
 using Persistance.Seeds;
 using System.Text;
 using WebApi.Middlewares;
+using WebApi.Services;
+using WebApi.SharedServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +22,8 @@ builder.Services.AddSwaggerExtensions();
 builder.Services.AddApplication();
 builder.Services.AddPersistance(builder.Configuration);
 builder.Services.AddInfrastructure();
+builder.Services.AddScoped<IAuthenticatedUser, AuthenticatedUser>();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication(options =>
 {
