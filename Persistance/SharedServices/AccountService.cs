@@ -262,7 +262,7 @@ namespace Persistance.SharedServices
             return new ApiResponse<bool>(true, "Verification email has been resent, please verify your account");
         }
 
-        public async Task<ApiResponse<bool>> ForgotPasswordlAsync(string userEmail)
+        public async Task<ApiResponse<bool>> ForgotPasswordAsync(string userEmail)
         {
             var user = await _userManager.FindByEmailAsync(userEmail);
             if (user == null)
@@ -308,11 +308,6 @@ namespace Persistance.SharedServices
             {
                 throw new ApiException(result.Errors.ToString());
             }
-        }
-
-        public Task<ApiResponse<bool>> ForgotPasswordAsync(string userEmail)
-        {
-            throw new NotImplementedException();
         }
     }
 }
