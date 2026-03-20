@@ -1,4 +1,5 @@
 ﻿using Application.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,10 +18,17 @@ namespace Persistance
             services.AddDbContext<ApplicationDbContext>(option => option.UseSqlServer(
                 configuration.GetConnectionString("DefaultConnection")
                 ));
+            services.AddDataProtection();
 
             services.AddIdentityCore<ApplicationUser>()
                .AddRoles<ApplicationRole>()
-               .AddEntityFrameworkStores<ApplicationDbContext>();
+               .AddEntityFrameworkStores<ApplicationDbContext>()
+               .AddDefaultTokenProviders();
+
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+            {
+                options.TokenLifespan = TimeSpan.FromMinutes(30); // Set token lifespan to 30 minutes
+            });
 
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 

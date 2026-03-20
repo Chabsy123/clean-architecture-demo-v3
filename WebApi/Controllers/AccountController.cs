@@ -9,7 +9,7 @@ namespace WebApi.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-    private readonly IAccountService _accountService;
+        private readonly IAccountService _accountService;
         public AccountController(IAccountService accountService)
         {
             _accountService = accountService;
@@ -29,5 +29,11 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
+        [HttpGet("Confirm-Email")]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] string userId, [FromQuery] string token, CancellationToken cancellationToken)
+        {
+            var result = await _accountService.ConfirmEmail(userId, token);
+            return Ok(result);
+        }
     }
 }
