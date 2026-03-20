@@ -35,5 +35,12 @@ namespace WebApi.Controllers
             var result = await _accountService.ConfirmEmail(userId, token);
             return Ok(result);
         }
+
+        [HttpGet("Resend-Confirmation-Email")]
+        public async Task<IActionResult> ResendConfirmationEmail([FromQuery] string email, CancellationToken cancellationToken)
+        {
+            var result = await _accountService.ResendConfirmationEmailAsync(email);
+            return Ok(result);
+        }
     }
 }

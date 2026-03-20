@@ -247,6 +247,20 @@ namespace Persistance.SharedServices
             }
 
         }
+        public async Task<ApiResponse<bool>> ResendConfirmationEmailAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
+            {
+                throw new ApiException($"User not found with this email {email}");
+            }
+            if (user.EmailConfirmed)
+            {
+                throw new ApiException($"Email already confirmed, you can login");
+            }
+            await SendConfirmationEmailAsync(user);
+            return new ApiResponse<bool>(true, "Verification email has been resent, please verify your account");
+        }
         }
     }
 
